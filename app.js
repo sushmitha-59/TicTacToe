@@ -4,12 +4,12 @@ let msgC=document.querySelector(".msg-container");
 let msg=document.querySelector(".msg");
 let turnO=true;
 const winPatterns=[[0,1,2],[0,3,6],[0,4,8],[1,4,7],[2,5,8],[2,4,6],[3,4,5],[6,7,8]];
-
+let win=false;
 const resetgame=()=>{
     turnO=true;
     enableBoxes();
     msgC.classList.add("hide");
-    
+    win=false; 
 }
 const enableBoxes=()=>{
     for(let box of boxes){
@@ -35,12 +35,27 @@ boxes.forEach((box) => {
         }
         box.disabled=true;
         winnercheck(); 
+        tie();
     });
     
 });
 const nowprint =(winner)=>{
     msg.innerText=`Winner is "${winner}"🎉`;
     msgC.classList.remove("hide");
+    win=true;
+}
+const tieprint =()=>{
+    msg.innerText=`Its a tie Match`;
+    msgC.classList.remove("hide");
+}
+const tie=()=>{
+    for(let box of boxes){
+        console.log(box);
+        if(box.innerText == ""){return;}
+    }
+    if(win ==false){
+        tieprint();
+    }
 }
 const winnercheck=()=>{
     for (let index = 0; index < winPatterns.length; index++) {
@@ -48,7 +63,7 @@ const winnercheck=()=>{
         let pos2=boxes[winPatterns[index][1]].innerText;
         let pos3=boxes[winPatterns[index][2]].innerText;
         if(pos1 != "" && pos2 != "" && pos3 !=""){
-            if(pos1 === pos2 && pos2===pos3){
+            if(pos1 === pos2 && pos2 === pos3){
                 console.log("winner is " , pos1);
                 nowprint(pos1);
                 disableBoxes();
